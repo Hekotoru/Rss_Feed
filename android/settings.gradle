@@ -1,0 +1,3 @@
+rootProject.name = 'Rss_Feed'
+
+include ':app'
