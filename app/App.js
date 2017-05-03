@@ -18,7 +18,6 @@ import Menu from './menu/Menu';
 import CustomButton from './Button';
 import GeneralView from './GeneralView';
 
-
 class App extends Component {
     state = {
     isOpen: false,
@@ -46,9 +45,6 @@ class App extends Component {
     return (
       <SideMenu menu={menu}>
         <View>
-        <Text style={styles.header}>
-            {this.state.selectedItem}
-          </Text> 
         <GeneralView menuSelected ={this.state.selectedItem} />
         </View>           
        </SideMenu>

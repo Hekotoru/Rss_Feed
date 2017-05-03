@@ -7,13 +7,9 @@ import {
   TouchableHighlight
 } from 'react-native';
 
-const TAG_TYPES = ['World','Sports','Health','Art','Technology & Science'];
-import { Actions } from 'react-native-router-flux';
+const TAG_TYPES = ['Channel World','Channel Sports','Channel Health','Channel Art','Channel Technology & Science'];
 
-class TagListing extends Component {
-      static propTypes = {
-    onTagClick: React.PropTypes.func.isRequired,
-};
+class ManageChannel extends Component {
       constructor(props) {
     super(props);
     this.state = {
@@ -41,12 +37,11 @@ class TagListing extends Component {
   }
 
   renderSingleFeed(Feed) {
-    const goToFeed = () => Actions.Feed({filter: Feed});
     return (
     <TouchableHighlight>
     <View style={styles.container}>
         <View style = {styles.listData}>
-          <Text onPress={goToFeed} style={styles.title}>{Feed}</Text>
+          <Text onPress={() => this.props.onTagClick(Feed)} style={styles.title}>{Feed}</Text>
         </View>
       </View>
     </TouchableHighlight>
@@ -71,11 +66,11 @@ const styles = StyleSheet.create({
     borderWidth: 0.2,
   },
   title: {
-      fontSize: 27,
+      fontSize: 20,
   },
   listView: {
      marginTop: 50,
   },
 });
 
-module.exports = TagListing;
+module.exports = ManageChannel;

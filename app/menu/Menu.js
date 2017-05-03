@@ -14,6 +14,7 @@ import {
   Image
 } from 'react-native';
 
+import { Actions } from 'react-native-router-flux';
 
 class Menu extends Component {
   static propTypes = {
@@ -23,20 +24,19 @@ class Menu extends Component {
   render() {
     return (
       <ScrollView scrollsToTop={false} style={styles.menu}>
-
         <Text
-          onPress={() => this.props.onItemSelected('Home')}
+          onPress={Actions.Home}
           style={styles.item}>
           Home
         </Text>
         <Text
-          onPress={() => this.props.onItemSelected('Tags')}
+          onPress={Actions.Tags}
           style={styles.item}>
           Tags
         </Text>
 
         <Text
-          onPress={() => this.props.onItemSelected('Manage channels')}
+          onPress={Actions.Channel}
           style={styles.item}>
           Manage channels
         </Text>
@@ -45,17 +45,15 @@ class Menu extends Component {
   }
 }
 
-const window = Dimensions.get('window');
+
 const styles = StyleSheet.create({
   menu: {
     flex: 1,
-    width: window.width,
-    height: window.height,
     backgroundColor: '#F5FCFF',
-    padding: 20,
+    marginTop: 50,
   },
   item: {
-    fontSize: 14,
+    fontSize: 20,
     fontWeight: '300',
     paddingTop: 5,
   },

@@ -12,6 +12,8 @@ import {
   View
 } from 'react-native';
 
+
+//import FeedApi from '../Helpers/RssToJson';
 //import FeedApi from 'rss-to-json';
 const REQUEST_URL = 'https://api.rss2json.com/v1/api.json?rss_url=http://www.cbc.ca/cmlink/rss-';
 
@@ -30,12 +32,21 @@ class FeedListing extends Component {
   }
 
   fetchData() {
+    
     let Tag = 'world';
     console.log(this.props.filter)
     if(this.props.filter != undefined)
     {
         Tag = this.props.filter.toLowerCase();
     }
+    /*FeedApi.loadGoogleFormat(REQUEST_URL + Tag, function(res,err){
+        console.log(res);
+        this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(res.items),
+        Feeds: res.feed,
+      })
+    });*/
+
     console.log(REQUEST_URL + Tag);
     fetch(REQUEST_URL+Tag)
     .then((response) => response.json())
@@ -45,9 +56,6 @@ class FeedListing extends Component {
         Feeds: responseData.feed,
       })
     });
-    /*FeedApi.load(REQUEST_URL + Tag, function(err, rss){
-        console.log(rss);
-    });*/
   }
   render() {
     if(!this.state.Feeds)
@@ -59,7 +67,7 @@ class FeedListing extends Component {
       )
     }
     return (
-      <ListView dataSource={this.state.dataSource}
+      <ListView style={styles.listView} dataSource={this.state.dataSource}
         renderRow={this.renderSingleFeed} />
     );
   }
@@ -94,7 +102,10 @@ const styles = StyleSheet.create({
   },
   title: {
       fontWeight: 'bold'
-  }
+  },
+    listView: {
+     marginTop: 50,
+  },
 });
 
 module.exports = FeedListing;

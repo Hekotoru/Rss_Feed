@@ -9,6 +9,7 @@ import {
 
 import FeedListing from './Feed/FeedListing';
 import TagsListing from './Tags/TagListing';
+import ManageChannel from './ManageChannel/ManageChannel';
 
 
 class GeneralView extends Component {
@@ -31,6 +32,10 @@ class GeneralView extends Component {
             return (<FeedListing filter={this.state.selectedItem}/>);
             }
             return (<TagsListing  onTagClick={this.onTagFilter}/>);
+            break;
+
+            case 'Manage channels':
+            return (<ManageChannel />);
             break;
 
             default:
