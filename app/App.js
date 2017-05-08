@@ -17,6 +17,8 @@ import SideMenu from 'react-native-side-menu';
 import Menu from './menu/Menu';
 import CustomButton from './Button';
 import GeneralView from './GeneralView';
+import { connect } from 'react-redux';
+
 
 class App extends Component {
     state = {
@@ -43,10 +45,7 @@ class App extends Component {
   render() {
      const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
     return (
-      <SideMenu menu={menu}>
-        <View>
-        <GeneralView menuSelected ={this.state.selectedItem} />
-        </View>           
+        <SideMenu menu={menu}>          
        </SideMenu>
     );
   }
@@ -85,4 +84,4 @@ const styles = StyleSheet.create({
   },
 });
 
-module.exports = App;
+module.exports = connect()(App);

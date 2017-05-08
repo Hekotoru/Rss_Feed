@@ -16,6 +16,20 @@ import {
 //import FeedApi from '../Helpers/RssToJson';
 //import FeedApi from 'rss-to-json';
 const REQUEST_URL = 'https://api.rss2json.com/v1/api.json?rss_url=http://www.cbc.ca/cmlink/rss-';
+import { connect } from 'react-redux';
+import { MAKE_REQUEST,FeedRequest } from '../Actions/ChannelActions';
+
+function mapStateToProps(state) {
+  return { feeds: state.Feeds.feeds, };
+}
+
+function mapDispatchToProps(dispatch) {
+  return { 
+      MakeRequest: (URL) => {
+        dispatch(FeedRequest(URL));
+     }
+  }
+}
 
 
 class FeedListing extends Component {
@@ -29,12 +43,13 @@ class FeedListing extends Component {
 
   componentDidMount() {
     this.fetchData();
+    //this.props.MakeRequest('https://api.rss2json.com/v1/api.json?rss_url=http://www.cbc.ca/cmlink/rss-world')
   }
 
   fetchData() {
     
     let Tag = 'world';
-    console.log(this.props.filter)
+    //console.log(this.props.filter)
     if(this.props.filter != undefined)
     {
         Tag = this.props.filter.toLowerCase();
@@ -47,7 +62,7 @@ class FeedListing extends Component {
       })
     });*/
 
-    console.log(REQUEST_URL + Tag);
+    //console.log(REQUEST_URL + Tag);
     fetch(REQUEST_URL+Tag)
     .then((response) => response.json())
     .then((responseData) => {
@@ -108,4 +123,4 @@ const styles = StyleSheet.create({
   },
 });
 
-module.exports = FeedListing;
+module.exports = connect()(FeedListing);

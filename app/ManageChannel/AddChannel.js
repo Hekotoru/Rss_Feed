@@ -10,7 +10,6 @@ import {
 
 import { connect } from 'react-redux';
 import { ADD_CHANNEL } from '../Actions/ChannelActions';
-import { bindActionCreators } from 'redux';
 import { Actions } from 'react-native-router-flux';
 
 function mapStateToProps(state) {
@@ -21,6 +20,9 @@ function mapDispatchToProps(dispatch) {
   return { 
       AddChannel: (item) => {
         dispatch({type: ADD_CHANNEL, channelName: item.channelName, channelTag: item.channelTag, channelUrl : item.channelUrl});
+        alert('Channel created');
+        Actions.Home({type:'reset'});
+        //console.log(this.props.channels);
      }
   }
 }
@@ -32,20 +34,20 @@ class AddChannel extends Component {
         }
         render() {
             return (
-            <View stye={styles.container}>
-                <Text>Channel name</Text>
-                <TextInput style={styles.welcome}
+            <View style={styles.container}>
+                <Text style={styles.welcome}>Channel name</Text>
+                <TextInput
                            onChangeText={(text) => this.setState({channelName:text})}
                            value={this.state.channelName}/>
-                <Text>Tags</Text>
-                <TextInput style={styles.welcome}
+                <Text style={styles.welcome}>Tags</Text>
+                <TextInput 
                            onChangeText={(text) => this.setState({channelTag:text})}
                            value={this.state.channelTag}/>
-                <Text>Url</Text>
-                <TextInput style={styles.welcome}
+                <Text  style={styles.welcome}>Url</Text>
+                <TextInput 
                            onChangeText={(text) => this.setState({channelUrl:text})}
                            value={this.state.channelUrl}/>
-                <Button onPress={this.props.AddChannel(this.state)} title="Save Channel"
+                <Button onPress={() => this.props.AddChannel(this.state)} title="Save Channel"
                         color="#841584" />
             </View>
             );
@@ -55,8 +57,7 @@ class AddChannel extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 50,
-    paddingTop: 50,
+    marginTop:50,
   },
   welcome: {
     fontSize: 20,

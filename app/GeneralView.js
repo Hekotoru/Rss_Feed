@@ -10,7 +10,7 @@ import {
 import FeedListing from './Feed/FeedListing';
 import TagsListing from './Tags/TagListing';
 import ManageChannel from './ManageChannel/ManageChannel';
-
+import { connect } from 'react-redux';
 
 class GeneralView extends Component {
     state = {
@@ -45,4 +45,4 @@ class GeneralView extends Component {
     }
 }
 
-module.exports = GeneralView;
+module.exports = connect()(GeneralView);

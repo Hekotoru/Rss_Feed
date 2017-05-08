@@ -25,18 +25,18 @@ class Menu extends Component {
     return (
       <ScrollView scrollsToTop={false} style={styles.menu}>
         <Text
-          onPress={Actions.Home}
+          onPress={()=>Actions.Home({type: 'reset'})}
           style={styles.item}>
           Home
         </Text>
         <Text
-          onPress={Actions.Tags}
+          onPress={()=>Actions.Tags({type: 'push'})}
           style={styles.item}>
           Tags
         </Text>
 
         <Text
-          onPress={Actions.Channel}
+          onPress={()=> Actions.Channel({type:'push'})}
           style={styles.item}>
           Manage channels
         </Text>

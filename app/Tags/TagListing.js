@@ -7,8 +7,14 @@ import {
   TouchableHighlight
 } from 'react-native';
 
-const TAG_TYPES = ['World','Sports','Health','Art','Technology & Science'];
+
 import { Actions } from 'react-native-router-flux';
+import { connect } from 'react-redux';
+
+
+function mapStateToProps(state) {
+  return { tags: state.Tags.tags};
+}
 
 class TagListing extends Component {
       static propTypes = {
@@ -28,9 +34,10 @@ class TagListing extends Component {
   }
 
   fetchData() {
+      console.log(this.props.tags)
       this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(TAG_TYPES),
-        Feeds: TAG_TYPES,
+        dataSource: this.state.dataSource.cloneWithRows(this.props.tags),
+        Feeds: this.props.tags,
       })
   }
   render() {
@@ -41,12 +48,12 @@ class TagListing extends Component {
   }
 
   renderSingleFeed(Feed) {
-    const goToFeed = () => Actions.Feed({filter: Feed});
+    const goToFeed = () => Actions.Feed({filter: Feed.tag});
     return (
     <TouchableHighlight>
     <View style={styles.container}>
         <View style = {styles.listData}>
-          <Text onPress={goToFeed} style={styles.title}>{Feed}</Text>
+          <Text onPress={goToFeed} style={styles.title}>{Feed.tag}</Text>
         </View>
       </View>
     </TouchableHighlight>
@@ -78,4 +85,4 @@ const styles = StyleSheet.create({
   },
 });
 
-module.exports = TagListing;
+module.exports = connect(mapStateToProps)(TagListing);
