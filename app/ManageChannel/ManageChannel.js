@@ -70,7 +70,7 @@ class ManageChannel extends Component {
           <View style={styles.ModaContainer}>
           <View>
             <Text style={styles.title}>Edit</Text>
-            <Text style={styles.title} onPress={this.props.deleteChannel(this.state)}>Delete</Text>
+            <Text style={styles.title} onPress={()=> this.props.deleteChannel(this.state)}>Delete</Text>
           </View>
             <TouchableHighlight onPress={() => {
               this.setModalVisible(!this.state.modalVisible)
