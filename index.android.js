@@ -19,6 +19,7 @@ import FeedListing from './app/Feed/FeedListing';
 import TagsListing from './app/Tags/TagListing';
 import ManageChannel from './app/ManageChannel/ManageChannel';
 import AddChannel from './app/ManageChannel/AddChannel';
+import AddTag from './app/Tags/AddTags';
 import { Provider, connect } from 'react-redux';
 import { createStore} from 'redux';
 import RssApp from './app/Reducers';
@@ -45,6 +46,7 @@ export default class Rss_Feed extends Component {
             <Scene key="Tags" component={TagsListing} title="Tags"/>
             <Scene key="Channel" component={ManageChannel} title="Manage Channel"/>
             <Scene key="AddChannel" component={AddChannel} title="Add Channel"/>
+            <Scene key="AddTag" component={AddTag} title="Add Tag"/>
             <Scene key="Feed" component={FeedListing} title="Feed"/>
           </Scene>
       </Router>

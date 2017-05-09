@@ -42,8 +42,8 @@ class FeedListing extends Component {
   }
 
   componentDidMount() {
-    this.fetchData();
-    //this.props.MakeRequest('https://api.rss2json.com/v1/api.json?rss_url=http://www.cbc.ca/cmlink/rss-world')
+    //this.fetchData();
+    this.props.MakeRequest('https://api.rss2json.com/v1/api.json?rss_url=http://www.cbc.ca/cmlink/rss-world')
   }
 
   fetchData() {
@@ -123,4 +123,4 @@ const styles = StyleSheet.create({
   },
 });
 
-module.exports = connect()(FeedListing);
+module.exports = connect(mapStateToProps,mapDispatchToProps)(FeedListing);

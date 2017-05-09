@@ -18,7 +18,7 @@ import Menu from './menu/Menu';
 import CustomButton from './Button';
 import GeneralView from './GeneralView';
 import { connect } from 'react-redux';
-
+import FeedListing from './Feed/FeedListing';
 
 class App extends Component {
     state = {
@@ -45,7 +45,8 @@ class App extends Component {
   render() {
      const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
     return (
-        <SideMenu menu={menu}>          
+        <SideMenu menu={menu}>
+          <FeedListing />          
        </SideMenu>
     );
   }

@@ -5,7 +5,8 @@ import {
   ListView,
   View,
   TextInput,
-  Button
+  Button,
+  Picker,
 } from 'react-native';
 
 import { connect } from 'react-redux';
@@ -13,7 +14,10 @@ import { ADD_CHANNEL } from '../Actions/ChannelActions';
 import { Actions } from 'react-native-router-flux';
 
 function mapStateToProps(state) {
-  return { channels: state.Channels.channels};
+  return { 
+    channels: state.Channels.channels,
+    tags: state.Tags.tags,
+  };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -30,7 +34,7 @@ function mapDispatchToProps(dispatch) {
 class AddChannel extends Component {
       constructor(props) {
           super(props);
-          this.state = { channelName: '', channelTag: '', channelUrl: '' };
+          this.state = { channelName: '', channelTag: '', channelUrl: '', tags:this.props.tags };
         }
         render() {
             return (
@@ -40,9 +44,12 @@ class AddChannel extends Component {
                            onChangeText={(text) => this.setState({channelName:text})}
                            value={this.state.channelName}/>
                 <Text style={styles.welcome}>Tags</Text>
-                <TextInput 
-                           onChangeText={(text) => this.setState({channelTag:text})}
-                           value={this.state.channelTag}/>
+                <Picker mode="dropdown" selectedValue={this.state.channelTag} onValueChange={(value) => {
+                                      this.setState({channelTag: value});}}>
+                  {this.props.tags.map((item, index) => {
+                    return (<Picker.Item label={item.tag} value={index} key={item.tag}/>) 
+                            })}
+                  </Picker>
                 <Text  style={styles.welcome}>Url</Text>
                 <TextInput 
                            onChangeText={(text) => this.setState({channelUrl:text})}

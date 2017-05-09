@@ -8,23 +8,28 @@ import {
   Button,
   ScrollView,
   Modal,
+  TextInput,
+  Picker
 } from 'react-native';
 
 
 import ActionButton from 'react-native-action-button';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
-import { DELETE_CHANNEL } from '../Actions/ChannelActions';
+import { DELETE_CHANNEL, EDIT_CHANNEL } from '../Actions/ChannelActions';
 
 
 function mapStateToProps(state) {
-  return { channels: state.Channels.channels};
+  console.log(state);
+  return { channels: state.Channels.channels, tags: state.Tags.tags,};
 }
 function mapDispatchToProps(dispatch) {
   return { 
       deleteChannel: (item) => {
-        dispatch({type: DELETE_CHANNEL,});
-        //alert('Channel deleted');
+        dispatch({type: DELETE_CHANNEL, id: item.channelId});
+     },
+     editChannel: (item) => {
+       dispatch({type: EDIT_CHANNEL, id: item.channelId,channelName: item.channelName, channelTag: item.channelTag, channelUrl : item.channelUrl})
      }
   }
 }
@@ -37,16 +42,34 @@ class ManageChannel extends Component {
       Tags: null,
       selectedItem: 'All',
       modalVisible: false,
+      channelName: null,
+      channelTag: null,
+      channelUrl: null,
+      channelId: null,
     }
   }
     componentDidMount() {
     this.fetchData();
   }
 
-  setModalVisible(visible) {
-    this.setState({modalVisible: visible});
+  setModalVisible(visible,Channel) {
+    if(Channel != null)
+    {
+      this.setState(
+      {
+        channelName: Channel.channelName,
+        channelTag: Channel.channelTag,
+        channelUrl: Channel.channelUrl,
+        channelId: Channel.id,
+      });
+    }
+    this.setState({
+      modalVisible: visible,
+    });
   }
-
+  componentDidUpdate(prevProps, prevState){
+    console.log(prevState.dataSource, this.props.channels, this.state.dataSource);
+  }
   fetchData() {
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(this.props.channels),
@@ -67,15 +90,31 @@ class ManageChannel extends Component {
           visible={this.state.modalVisible}
           onRequestClose={() => {alert("Modal has been closed.")}}
           >
+          <Text style={styles.welcome}>Channel name</Text>
+                <TextInput
+                           onChangeText={(text) => this.setState({channelName:text})}
+                           value={this.state.channelName}/>
+                <Text style={styles.welcome}>Tags</Text>
+                <Picker mode="dropdown" selectedValue={this.state.channelTag} onValueChange={(value) => {
+                                      this.setState({channelTag: value});}}>
+                  {this.props.tags.map((item, index) => {
+                    return (<Picker.Item label={item.tag} value={index} key={item.tag}/>) 
+                            })}
+                  </Picker>
+          <Text  style={styles.welcome}>Url</Text>
+                          <TextInput 
+                           onChangeText={(text) => this.setState({channelUrl:text})}
+                           value={this.state.channelUrl}/>
           <View style={styles.ModaContainer}>
           <View>
-            <Text style={styles.title}>Edit</Text>
-            <Text style={styles.title} onPress={()=> this.props.deleteChannel(this.state)}>Delete</Text>
+            <Button onPress={() => this.props.editChannel(this.state)} title="Save Changes"
+                        color="#841584" />
+            <Button style={{fontSize:20, marginTop:50}} onPress={()=> {this.setModalVisible(!this.state.modalVisible,null); this.props.deleteChannel(this.state)}} title="Delete" color="red" />
           </View>
             <TouchableHighlight onPress={() => {
-              this.setModalVisible(!this.state.modalVisible)
+              this.setModalVisible(!this.state.modalVisible,null)
               }}>
-              <Text style={{marginTop: 150, fontSize: 28}}>Close</Text>
+              <Text style={{marginTop: 50, fontSize: 28}}>Close</Text>
             </TouchableHighlight>
          </View>
        </Modal>
@@ -83,10 +122,19 @@ class ManageChannel extends Component {
     );
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.channels !== nextProps.channels) {
+    console.log(this.props.channels, nextProps.channels)
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(nextProps.channels)
+      });
+    }
+  }
+
   renderSingleFeed(Channel) {
     return (
     <TouchableHighlight onPress={() => {
-              this.setModalVisible(!this.state.modalVisible)
+              this.setModalVisible(!this.state.modalVisible,Channel)
       }}>
     <View style={styles.container}>
         <View style = {styles.listData}>
@@ -125,6 +173,7 @@ const styles = StyleSheet.create({
   },
   ModaContainer: {
     flex: 1,
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF', 

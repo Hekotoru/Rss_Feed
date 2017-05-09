@@ -8,31 +8,31 @@ const initialState = {
     {
       id: id++,
       channelName: 'Channel World',
-      channelTag: 'World',
+      channelTag: 0,
       channelUrl: 'http://www.cbc.ca/cmlink/rss-world',
     },
     {
       id: id++,
       channelName: 'Channel Sports',
-      channelTag: 'Sports',
+      channelTag: 1,
       channelUrl: 'http://www.cbc.ca/cmlink/rss-sports',
     },
     {
       id: id++,
       channelName: 'Channel Health',
-      channelTag: 'Health',
+      channelTag: 2,
       channelUrl: 'http://www.cbc.ca/cmlink/rss-health',
     },
     {
       id: id++,
       channelName: 'Channel Art',
-      channelTag: 'Arts',
+      channelTag: 3,
       channelUrl: 'http://www.cbc.ca/cmlink/rss-arts',
     },
     {
       id: id++,
       channelName: 'Channel Technology & Science',
-      channelTag: 'Technology',
+      channelTag: 4,
       channelUrl: 'http://www.cbc.ca/cmlink/rss-technology',
     },
   ]
@@ -41,19 +41,28 @@ const initialState = {
 function Channels(state= initialState ,action) {
     switch (action.type) {
     case ADD_CHANNEL:
+    
     return {channels: state.channels.concat({id: id++, channelName: action.channelName, 
               channelTag: action.channelTag, channelUrl: action.channelUrl})};
     case EDIT_CHANNEL:
+    let channel = state.channels.concat([]);
+    let obj = {
+        id:action.id,
+        channelName: action.channelName, 
+        channelTag: action.channelTag,
+        channelUrl: action.channelUrl
+      };
+    channel.splice(action.id,1,obj);
     return {  
-       channels: state.channels.map(
-           (channels, i) => i === 1 ? {...channels, text: action.payload}
-                                   : channels
-       )
-    }
+       channels: channel
+    };
     case DELETE_CHANNEL:
+    let channels = state.channels.concat([]);
+    channels.splice(action.id,1);
+    
     return {
-    channels: [...state.channels.splice(0, action.payload), ...state.channels.splice(1)],
-    }
+    channels: channels
+    };
     case SHOW_CHANNELS:
     return state;
     default:

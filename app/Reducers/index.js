@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux'
 import Channels from './Channels'
 import Tags from './Tags'
-import Feed from './Feed'
+import Feeds from './Feeds'
 
 const RssFeed = combineReducers({
   Channels,
   Tags,
-  Feed,
+  Feeds,
 })
 
 export default RssFeed

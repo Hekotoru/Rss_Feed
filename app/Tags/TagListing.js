@@ -10,7 +10,7 @@ import {
 
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
-
+import ActionButton from 'react-native-action-button';
 
 function mapStateToProps(state) {
   return { tags: state.Tags.tags};
@@ -42,8 +42,13 @@ class TagListing extends Component {
   }
   render() {
     return (
+      <View>
       <ListView style={styles.listView} dataSource={this.state.dataSource}
         renderRow={this.renderSingleFeed.bind(this)} />
+        <ActionButton   style={styles.addButton}
+                        buttonColor="rgba(231,76,60,1)"
+                        onPress={()=> Actions.AddTag({type: 'push'})}/>
+        </View>
     );
   }
 
@@ -82,6 +87,9 @@ const styles = StyleSheet.create({
   },
   listView: {
      marginTop: 50,
+  },
+  addButton: {
+    height: 22,
   },
 });
 
