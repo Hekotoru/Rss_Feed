@@ -1,6 +1,6 @@
 'use strict'
 
-import {MAKE_REQUEST } from '../Actions/FeedActions';
+import {MAKE_REQUEST,FeedRequest } from '../Actions/FeedActions';
 let id = 0;
 const initialState = {  
   feeds: [
@@ -10,7 +10,8 @@ const initialState = {
 function Feeds(state= initialState ,action) {
     switch (action.type) {
     case MAKE_REQUEST:
-    return {feeds: state.feeds.concat({id: id++, data: action.data,})};
+    console.log(action);
+    return {feeds: state.feeds.concat({id: id++, data: action.data})};
     default:
     return state;
     }

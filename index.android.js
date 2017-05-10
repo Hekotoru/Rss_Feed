@@ -21,13 +21,13 @@ import ManageChannel from './app/ManageChannel/ManageChannel';
 import AddChannel from './app/ManageChannel/AddChannel';
 import AddTag from './app/Tags/AddTags';
 import { Provider, connect } from 'react-redux';
-import { createStore} from 'redux';
+import { createStore, applyMiddleware} from 'redux';
 import RssApp from './app/Reducers';
+import thunk from 'redux-thunk';
 
 
 
-
-let store = createStore(RssApp);
+let store = createStore(RssApp,applyMiddleware(thunk));
 
 /*TODO: Having a problem with the library react-native-router-flux,
         has conflict when im using my custom redux and call an action from the router.

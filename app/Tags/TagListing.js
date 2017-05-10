@@ -11,15 +11,24 @@ import {
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import ActionButton from 'react-native-action-button';
+import { ADD_TAGS,SELECT_TAG } from '../Actions/TagsActions';
 
 function mapStateToProps(state) {
-  return { tags: state.Tags.tags};
+  return { tags: state.Tags.tags,};
 }
 
+function mapDispatchToProps(dispatch) {
+  return { 
+      selectedTag: (Tag) => {
+        dispatch({type: SELECT_TAG, selected: Tag.id,});
+        //dispatch(FeedRequest(Filter));
+        //Actions.Home({type:'reset'});
+     }
+  }
+}
+
+
 class TagListing extends Component {
-      static propTypes = {
-    onTagClick: React.PropTypes.func.isRequired,
-};
       constructor(props) {
     super(props);
     this.state = {
@@ -34,7 +43,6 @@ class TagListing extends Component {
   }
 
   fetchData() {
-      console.log(this.props.tags)
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(this.props.tags),
         Feeds: this.props.tags,
@@ -53,12 +61,11 @@ class TagListing extends Component {
   }
 
   renderSingleFeed(Feed) {
-    const goToFeed = () => Actions.Feed({filter: Feed.tag});
     return (
     <TouchableHighlight>
     <View style={styles.container}>
         <View style = {styles.listData}>
-          <Text onPress={goToFeed} style={styles.title}>{Feed.tag}</Text>
+          <Text onPress={()=> this.props.selectedTag(Feed,this.props.channels)} style={styles.title}>{Feed.tag}</Text>
         </View>
       </View>
     </TouchableHighlight>
@@ -93,4 +100,4 @@ const styles = StyleSheet.create({
   },
 });
 
-module.exports = connect(mapStateToProps)(TagListing);
+module.exports = connect(mapStateToProps,mapDispatchToProps)(TagListing);

@@ -1,6 +1,6 @@
 'use strict'
 
-import {ADD_TAGS, SHOW_TAGS } from '../Actions/TagsActions';
+import {ADD_TAGS, SHOW_TAGS, SELECT_TAG } from '../Actions/TagsActions';
 let id = 0;
 const initialState = {  
   tags: [
@@ -25,7 +25,8 @@ const initialState = {
             tag: 'Technology & Science',
         },
 
-  ]
+  ],
+  selected: 0
 }
 
 function Tags(state= initialState ,action) {
@@ -34,6 +35,12 @@ function Tags(state= initialState ,action) {
     return {tags: state.tags.concat({id: id++, tag: action.tag,})};
     case SHOW_TAGS:
     return state;
+    case SELECT_TAG:
+    let obj = {
+        selected: action.selected,
+    }
+    let tag = Object.assign({},state.tags,obj);
+    return tag
     default:
     return state;
     }

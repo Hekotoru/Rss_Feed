@@ -13,14 +13,12 @@ import {
 } from 'react-native';
 
 
-//import FeedApi from '../Helpers/RssToJson';
-//import FeedApi from 'rss-to-json';
-const REQUEST_URL = 'https://api.rss2json.com/v1/api.json?rss_url=http://www.cbc.ca/cmlink/rss-';
+//const REQUEST_URL = 'https://api.rss2json.com/v1/api.json?rss_url=http://www.cbc.ca/cmlink/rss-';
 import { connect } from 'react-redux';
-import { MAKE_REQUEST,FeedRequest } from '../Actions/ChannelActions';
+import { FeedRequest } from '../Actions/FeedActions';
 
 function mapStateToProps(state) {
-  return { feeds: state.Feeds.feeds, };
+  return { feeds: state.Feeds.feeds,  tags: state.Tags.selected,  channels: state.Channels.channels,};
 }
 
 function mapDispatchToProps(dispatch) {
@@ -31,47 +29,63 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-
 class FeedListing extends Component {
   constructor(props) {
     super(props);
     this.state = {
       dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
-      Feeds: null
+      Feeds: null,
+      Filter: null,
     }
   }
 
-  componentDidMount() {
-    //this.fetchData();
-    this.props.MakeRequest('https://api.rss2json.com/v1/api.json?rss_url=http://www.cbc.ca/cmlink/rss-world')
-  }
-
-  fetchData() {
-    
-    let Tag = 'world';
-    //console.log(this.props.filter)
-    if(this.props.filter != undefined)
+  filterTag(){
+    if( this.state.Filter != null)
     {
-        Tag = this.props.filter.toLowerCase();
-    }
-    /*FeedApi.loadGoogleFormat(REQUEST_URL + Tag, function(res,err){
-        console.log(res);
-        this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(res.items),
-        Feeds: res.feed,
-      })
-    });*/
-
-    //console.log(REQUEST_URL + Tag);
-    fetch(REQUEST_URL+Tag)
-    .then((response) => response.json())
-    .then((responseData) => {
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(responseData.items),
-        Feeds: responseData.feed,
-      })
+    this.props.MakeRequest(this.state.Filter[0]);
+    this.setState({
+      Filter: Filter.shift()
     });
+    }
   }
+  componentWillReceiveProps(nextProps) {
+    if (this.props.feeds !== nextProps.feeds) {
+      console.log(this.props.tags,nextProps.tags);
+      if(this.props.tags !== nextProps.tags)
+      {
+            let tag = nextProps.tags;
+            let channel = nextProps.channels;
+            let foo = nextProps.feeds;
+            let Filter = [];
+            channel.map((item,index) =>{
+            if(item.channelTag == tag)
+              {
+                Filter.push(item.channelUrl);
+              }
+            });
+            this.setState({
+              Filter: Filter,
+            })
+      }
+    let data = [];
+    nextProps.feeds.map((item,index) =>
+    {
+      item.data.map((datas,index)=>
+      {
+        data.push(datas); 
+      });
+    });
+    //console.log(nextProps.feeds)
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(data),
+        Feeds: data
+      });
+    }
+  }
+  componentDidMount() {
+    this.props.MakeRequest('http://www.cbc.ca/cmlink/rss-world');
+  }
+
   render() {
     if(!this.state.Feeds)
     {
@@ -82,7 +96,8 @@ class FeedListing extends Component {
       )
     }
     return (
-      <ListView style={styles.listView} dataSource={this.state.dataSource}
+      <ListView style={styles.listView} dataSource={this.state.dataSource} onEndReached={()=>{this.filterTag()}}
+        onEndReachedThreshold={1}
         renderRow={this.renderSingleFeed} />
     );
   }
