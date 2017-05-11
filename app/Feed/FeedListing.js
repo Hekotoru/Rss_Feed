@@ -15,7 +15,7 @@ import {
 
 //const REQUEST_URL = 'https://api.rss2json.com/v1/api.json?rss_url=http://www.cbc.ca/cmlink/rss-';
 import { connect } from 'react-redux';
-import { FeedRequest } from '../Actions/FeedActions';
+import { FeedRequest, CLEAR_STATE} from '../Actions/FeedActions';
 
 function mapStateToProps(state) {
   return { feeds: state.Feeds.feeds,  tags: state.Tags.selected,  channels: state.Channels.channels,};
@@ -25,6 +25,9 @@ function mapDispatchToProps(dispatch) {
   return { 
       MakeRequest: (URL) => {
         dispatch(FeedRequest(URL));
+     },
+     ClearData: () => {
+       dispatch({type:CLEAR_STATE})
      }
   }
 }
@@ -40,19 +43,16 @@ class FeedListing extends Component {
   }
 
   filterTag(){
-    if( this.state.Filter != null)
+    if( this.state.Filter != null && this.state.Filter.length != 0)
     {
     this.props.MakeRequest(this.state.Filter[0]);
-    this.setState({
-      Filter: Filter.shift()
-    });
+    this.state.Filter.shift();
     }
   }
   componentWillReceiveProps(nextProps) {
-    if (this.props.feeds !== nextProps.feeds) {
-      console.log(this.props.tags,nextProps.tags);
-      if(this.props.tags !== nextProps.tags)
+     if(this.props.tags !== nextProps.tags)
       {
+            //this.props.ClearData();
             let tag = nextProps.tags;
             let channel = nextProps.channels;
             let foo = nextProps.feeds;
@@ -67,6 +67,8 @@ class FeedListing extends Component {
               Filter: Filter,
             })
       }
+    //console.log(this.props.feeds,nextProps.feeds);
+    if (this.props.feeds !== nextProps.feeds) {
     let data = [];
     nextProps.feeds.map((item,index) =>
     {
@@ -75,7 +77,6 @@ class FeedListing extends Component {
         data.push(datas); 
       });
     });
-    //console.log(nextProps.feeds)
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(data),
         Feeds: data

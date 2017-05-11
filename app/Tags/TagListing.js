@@ -21,6 +21,7 @@ function mapDispatchToProps(dispatch) {
   return { 
       selectedTag: (Tag) => {
         dispatch({type: SELECT_TAG, selected: Tag.id,});
+        alert('Tag Selected:'+Tag.tag);
         //dispatch(FeedRequest(Filter));
         //Actions.Home({type:'reset'});
      }

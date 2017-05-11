@@ -25,7 +25,7 @@ class Menu extends Component {
     return (
       <ScrollView scrollsToTop={false} style={styles.menu}>
         <Text
-          onPress={()=>Actions.Home({type: 'reset'})}
+          onPress={()=>Actions.Home({type: 'home'})}
           style={styles.item}>
           Home
         </Text>

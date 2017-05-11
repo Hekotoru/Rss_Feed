@@ -1,5 +1,5 @@
 export const MAKE_REQUEST = 'MAKE_REQUEST';
-
+export const CLEAR_STATE = 'CLEAR_STATE';
 
 export function GetAllData(response) {
   console.log(response);
